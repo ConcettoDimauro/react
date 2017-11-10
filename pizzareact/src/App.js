@@ -9,23 +9,23 @@ class App extends Component {
   state = {
     pizzas: [
       {
-        id:1,
+        id: 1,
         name: 'pepperoni',
-        sliceCount:8
+        sliceCount: 8
       }, {
-        id:2,
+        id: 2,
         name: 'spicy meatball',
-        sliceCount:10
+        sliceCount: 10
       }, {
-        id:3,
+        id: 3,
         name: 'Harriots Special',
-        sliceCount:6
+        sliceCount: 6
       }
     ],
     showPizzas: false
   }
 
-  pizzaChange = (event, id) => {
+  pizzaChange = (event, id, slicechange) => {
     //find the pizza object
     const pizzaIndex = this.state.pizzas.findIndex(i => {
       return i.id === id;
@@ -35,13 +35,24 @@ class App extends Component {
       ...this.state.pizzas[pizzaIndex]
     };
     //update from textbox
-    pizza.name = event.target.value;
+    if (slicechange) {
+      pizza.sliceCount = event.target.value;
+
+    }
+    else {
+      pizza.name = event.target.value;
+    }
+
+
+
     const pizzas = [...this.state.pizzas];
     pizzas[pizzaIndex] = pizza;
     this.setState({ pizzas: pizzas });
-    
-    
-    
+
+
+
+
+
   }
   deletePizzaHandler = (pizzaIndex) => {
     const pizzas = [...this.state.pizzas];
@@ -78,8 +89,8 @@ class App extends Component {
                 name={pizza.name}
                 sliceCount={pizza.sliceCount}
                 key={pizza.id}
-                changed={(event) => this.pizzaChange(event, pizza.id)} 
-                slicechange={(event) => this.pizzaChange(event, pizza.id)} />
+                changed={(event) => this.pizzaChange(event, pizza.id, false)}
+                slicechange={(event) => this.pizzaChange(event, pizza.id, true)} />
 
             })}
         </div>
@@ -92,8 +103,8 @@ class App extends Component {
         <img src={logo} className="App-logo" alt="logo" />
         <button style={style} onClick={this.togglePizzasHandler}> TOGGLE ME</button>
         {pizzas}
-        
-      
+
+
       </div>
     );
   }
